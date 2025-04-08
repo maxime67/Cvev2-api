@@ -48,7 +48,7 @@ const findByCveId = async (req, res) => {
 const findAll = async (req, res) => {
     try {
         const cves = await CVE.find({})
-            .sort({ lastModified: -1 })
+            .sort({lastModified: -1})
 
         res.json(cves);
     } catch (error) {
@@ -69,7 +69,7 @@ const findAllByProduct = async (req, res) => {
     try {
         let product = await Product.findOne({name: req.params.product})
         const cves = await CVE.find({products: product._id})
-            .sort({ published: -1 })
+            .sort({published: -1})
         res.json(cves);
     } catch (error) {
         res.status(500).json({
@@ -88,9 +88,14 @@ const findAllByProduct = async (req, res) => {
  */
 const findByBaseScoreLimit = async (req, res) => {
     try {
+        const date = new Date().setMonth(new Date().getMonth() - 1);
         const cves = await CVE.find({
-            "metrics.cvssMetricV2.0.baseScore": { $gt: req.params.basescore },
-        });
+            "metrics.cvssMetricV2.0.baseScore": {$gt: req.params.basescore},
+            published: { $gte: date}
+        })
+            .populate('products')
+            .sort({ "metrics.cvssMetricV2.0.baseScore": -1})
+            .limit(20);
 
         res.json(cves);
     } catch (error) {
@@ -111,7 +116,7 @@ const findLastCreatedCVE = async (req, res) => {
     try {
         const cves = await CVE.find({})
             .populate('products')
-            .sort({ createdAt: -1 })
+            .sort({published: 1})
             .limit(req.params.limit || 50)
         console.log(await cves)
         res.json(await cves);
@@ -137,7 +142,7 @@ const findAllByVendor = async (req, res) => {
         const productIds = products.map(p => p._id);
 
         const cves = await CVE.find({products: {$in: productIds}})
-            .sort({ published: -1 })
+            .sort({published: -1})
 
         res.json(cves);
     } catch (error) {

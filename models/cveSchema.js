@@ -26,7 +26,8 @@ const cveSchema = new Schema({
     }],
     metrics: {
         cvssMetricV2: [cvssMetricSchema],
-        cvssMetricV3: [cvssMetricSchema]
+        cvssMetricV3: [cvssMetricSchema],
+        cvssMetricV31: [cvssMetricSchema],
     },
     products: [{
         type: Schema.Types.ObjectId,
