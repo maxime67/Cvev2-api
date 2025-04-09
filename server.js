@@ -9,14 +9,23 @@ var logger = require('morgan');
 var cveRouter = require('./routes/cveRouter');
 var productRouter = require('./routes/productRouter');
 var vendorRouter = require('./routes/vendorRouter');
+var authRouter = require('./routes/authRouter');
 var connectDB = require('./config/database');
 var cors = require('cors')
+
+// Vérifier si la clé secrète JWT est définie
+if (!process.env.JWT_SECRET) {
+  console.error('ERREUR: La variable d\'environnement JWT_SECRET n\'est pas définie');
+  console.error('Veuillez ajouter JWT_SECRET=votre_secret_jwt dans votre fichier .env');
+  process.exit(1);
+}
+
 // Connect to the database
 console.log('MongoDB URI:', process.env.MONGODB_URI);
 connectDB();
 
 var app = express();
-app.use(cors(''))
+app.use(cors())
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
@@ -28,9 +37,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Routes
-app.use("/product", productRouter);
-app.use("/vendor", vendorRouter);
-app.use("/cve", cveRouter);
+app.use('/api/auth', authRouter);
+app.use("/api/product", productRouter);
+app.use("/api/vendor", vendorRouter);
+app.use("/api/cve", cveRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
