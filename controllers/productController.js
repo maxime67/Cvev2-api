@@ -31,7 +31,6 @@ const findById = async (req, res) => {
         console.log(req.params.id);
         const products = await Product.findById(req.params.id)
             .populate('vendor')
-        console.log(await products)
 
         res.json(products);
     } catch (error) {
@@ -76,7 +75,6 @@ const findLastCreatedProduct = async (req, res) => {
             .populate('vendor')
             .sort({ createdAt: -1 })
             .limit(req.params.limit || 50)
-        console.log(await products);
 
         res.json(await products);
     } catch (error) {
@@ -107,7 +105,6 @@ const findByName = async (req, res) => {
             .sort({ name: 1 }) // Tri par ordre alphabétique
             .limit(10);
 
-        console.log(products);
 
         if (!products || products.length === 0) {
             return res.json([]);
