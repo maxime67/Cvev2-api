@@ -42,6 +42,32 @@ const findByCveId = async (req, res) => {
 };
 
 /**
+ * Retourne une Cve à partir du Cve-id fournit, a
+ * @param {String} id - Cve-id recherché
+ * @returns {Promise<List<CVE>>} - Liste d'objet CVE
+ */
+const findByCveByChar = async (req, res) => {
+    try {
+        const { id } = req.params
+        const searchRegex = new RegExp(id, 'i');
+
+        // Recherche des produits dont le nom contient la chaîne de recherche
+        const cves = await CVE.find({id: searchRegex})
+            .select("id")
+            .select("_id")
+            .limit(30)
+
+        res.json(cves);
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'Erreur lors de la récupération des CVE',
+            error: error.message
+        });
+    }
+};
+
+/**
  * Retourne toutes les Cve trié par date de création
  * @returns {Promise<List<CVE>>} - Liste de CVE
  */
@@ -160,4 +186,5 @@ module.exports = {
     findAllByVendor,
     findAllByProduct,
     findLastCreatedCVE,
+    findByCveByChar
 };
