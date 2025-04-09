@@ -28,7 +28,6 @@ const findAll = async (req, res) => {
  */
 const findById = async (req, res) => {
     try {
-        console.log(req.params.id);
         const products = await Product.findById(req.params.id)
             .populate('vendor')
 
@@ -94,7 +93,6 @@ const findLastCreatedProduct = async (req, res) => {
 const findByName = async (req, res) => {
     try {
         const { query } = req.params
-        console.log(req.params)
         const searchRegex = new RegExp(query, 'i');
 
         // Recherche des produits dont le nom contient la chaîne de recherche

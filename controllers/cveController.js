@@ -89,11 +89,11 @@ const findAllByProduct = async (req, res) => {
 const findByBaseScoreLimit = async (req, res) => {
     try {
         const cves = await CVE.find({
-            "metrics.cvssMetricV2.baseScore": {$gt: req.params.basescore},
+            "metrics.cvssMetric.baseScore": {$gt: req.params.basescore},
         })
             .populate('products')
-            .sort({ "metrics.cvssMetricV2.baseScore": -1})
-            .sort({ published: 1})
+            .sort({ "metrics.cvssMetric.baseScore": -1})
+            .sort({ published: -1})
             .limit(20)
 
         res.json(await cves);
@@ -115,10 +115,9 @@ const findLastCreatedCVE = async (req, res) => {
     try {
         const cves = await CVE.find({})
             .populate('products')
-            .sort({published: 1})
+            .sort({published: -1})
             .limit(req.params.limit || 50)
         res.json(await cves);
-        console.log(await cves)
     } catch (error) {
         res.status(500).json({
             success: false,
