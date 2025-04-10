@@ -10,8 +10,7 @@ const CVE = require("../models/cveSchema");
  */
 const findById = async (req, res) => {
     try {
-        const cves = await CVE.findById(req.params.id)
-
+        const cves = await CVE.findById(req.params.id).populate('products')
         res.json(cves);
     } catch (error) {
         res.status(500).json({
