@@ -76,17 +76,8 @@ const findByName = async (req, res) => {
             .sort({name: 1}) // Tri par ordre alphabétique
             .limit(10);
 
-        if (!vendors || vendors.length === 0) {
-            return res.json([]);
-        }
 
-        // Correction de la méthode map pour retourner correctement les objets
-        const vendorData = vendors.map(vendor => ({
-            name: vendor.name,
-            productsCount: vendor.products ? vendor.products.length : 0
-        }));
-
-        res.json(vendorData);
+        res.json(vendors);
     } catch (error) {
         res.status(500).json({
             success: false,

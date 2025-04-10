@@ -10,6 +10,7 @@ var cveRouter = require('./routes/cveRouter');
 var productRouter = require('./routes/productRouter');
 var vendorRouter = require('./routes/vendorRouter');
 var authRouter = require('./routes/authRouter');
+var userInteractionRouter = require('./routes/userInteractionRouter');
 var connectDB = require('./config/database');
 var cors = require('cors')
 
@@ -41,6 +42,7 @@ app.use('/api/auth', authRouter);
 app.use("/api/product", productRouter);
 app.use("/api/vendor", vendorRouter);
 app.use("/api/cve", cveRouter);
+app.use("/api/interaction", userInteractionRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
