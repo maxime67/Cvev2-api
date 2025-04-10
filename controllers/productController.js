@@ -103,13 +103,7 @@ const findByName = async (req, res) => {
             .sort({ name: 1 }) // Tri par ordre alphabétique
             .limit(10);
 
-
-        if (!products || products.length === 0) {
-            return res.json([]);
-        }
-        const productNames = products.map(product => product.name);
-
-        res.json(productNames);
+        res.json(products);
     } catch (error) {
         res.status(500).json({
             success: false,

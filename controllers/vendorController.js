@@ -71,7 +71,8 @@ const findByName = async (req, res) => {
 
         // Recherche des produits dont le nom contient la chaîne de recherche
         const vendors = await Vendor.find({name: searchRegex})
-            .select('name products')
+            .select('name')
+            .select('_id')
             .sort({name: 1}) // Tri par ordre alphabétique
             .limit(10);
 
