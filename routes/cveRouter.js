@@ -7,7 +7,8 @@ const {
     findAllByProduct,
     findAllByVendor,
     findLastCreatedCVE,
-    findByCveByChar
+    findByCveByChar,
+    findAllByProductId
 } = require("../controllers/cveController");
 const {findByName} = require("../controllers/productController");
 var router = express.Router();
@@ -20,6 +21,7 @@ router.get('/id/:id', findByCveId);
 router.get('/completion/:id', findByCveByChar);
 router.get('/basescore/:basescore', findByBaseScoreLimit);
 router.get('/product/:product', findAllByProduct);
+router.get('/product/id/:productId', findAllByProductId);
 router.get('/vendor/:vendor', findAllByVendor);
 
 module.exports = router;

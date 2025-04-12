@@ -90,9 +90,30 @@ const findAll = async (req, res) => {
  * @param {String} product - nom du produit
  * @returns {Promise<List<CVE>>} - Liste de CVE
  */
-const findAllByProduct = async (req, res) => {
+const findAllByProductName = async (req, res) => {
     try {
         let product = await Product.findOne({name: req.params.product})
+        const cves = await CVE.find({products: product._id})
+            .sort({published: -1})
+        res.json(cves);
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'Erreur lors de la récupération des CVE',
+            error: error.message
+        });
+        console.log(error)
+    }
+};
+
+/**
+ * Retourne les CVE à partir de l'indentifiant d'un produit
+ * @param {String} product - nom du produit
+ * @returns {Promise<List<CVE>>} - Liste de CVE
+ */
+const findAllByProductId = async (req, res) => {
+    try {
+        let product = await Product.findOne({_id: req.params.productId})
         const cves = await CVE.find({products: product._id})
             .sort({published: -1})
         res.json(cves);
@@ -183,7 +204,8 @@ module.exports = {
     findById,
     findAll,
     findAllByVendor,
-    findAllByProduct,
+    findAllByProduct: findAllByProductName,
     findLastCreatedCVE,
-    findByCveByChar
+    findByCveByChar,
+    findAllByProductId
 };

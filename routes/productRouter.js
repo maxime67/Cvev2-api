@@ -4,12 +4,14 @@ const {
     findAll,
     findByName,
     findAllProductByVendor,
-    findLastCreatedProduct
+    findLastCreatedProduct,
+    findByVendorId
 } = require("../controllers/productController");
 var router = express.Router();
 
 /* GET home page. */
 router.get('/', findAll);
+router.get('/vendor/id/:id', findByVendorId);
 router.get('/name/:query', findByName);
 router.get('/vendor/:query', findAllProductByVendor);
 router.get('/last/:limit?', findLastCreatedProduct);

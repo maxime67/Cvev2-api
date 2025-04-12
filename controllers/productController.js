@@ -42,6 +42,25 @@ const findById = async (req, res) => {
 };
 
 /**
+ * Retourne les produits à partir d'un id Vendor
+ * @param {int} id - Id recherché
+ * @returns {Promise<Product>} - Objet Produit
+ */
+const findByVendorId = async (req, res) => {
+    try {
+        const products = await Product.find({ vendor: req.params.id })
+
+        res.json(products);
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'Erreur lors de la récupération des produits',
+            error: error.message
+        });
+    }
+};
+
+/**
  * Retourne tous les produit à partir d'un nom de vendeur
  * @param {int} query - Nom du vendor
  * @returns {Promise<List<Product>>} - Liste de produit
@@ -119,5 +138,6 @@ module.exports = {
     findLastCreatedProduct,
     findAll,
     findByName,
-    findAllProductByVendor
+    findAllProductByVendor,
+    findByVendorId
 };
